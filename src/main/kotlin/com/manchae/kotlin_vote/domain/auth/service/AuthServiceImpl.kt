@@ -9,10 +9,8 @@ import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.LoginRes
 import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.RefreshRes
 import com.manchae.kotlin_vote.global.common.BaseResponse
 import com.manchae.kotlin_vote.global.exception.CustomException
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.transaction.annotation.Transactional
-import java.lang.Exception
 
 class AuthServiceImpl(
     private val authRepository: AuthRepository,
