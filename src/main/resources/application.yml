@@ -13,8 +13,8 @@ spring:
 application:
   jwt:
     secret: 29a5f10aff5fb4d92c464240b8c976f044bed2c96557b5fab2f33d8e0c8d5466
-    refreshExp: 604800000 # 1?
-    accessExp: 6000000 # 2??
+    refreshExp: 604800000 # 1 week
+    accessExp: 6000000 # 2 hour
 
 springdoc:
   api-docs:
