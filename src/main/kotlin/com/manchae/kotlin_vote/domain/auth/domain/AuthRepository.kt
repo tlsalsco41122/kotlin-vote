@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface AuthRepository: JpaRepository<UserEntity, String> {
     fun existsByEmail(email: String): Boolean
+    fun findByEmail(email: String): UserEntity?
 }
