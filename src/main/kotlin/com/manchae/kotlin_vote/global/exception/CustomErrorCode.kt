@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus
 
 interface CustomErrorCode {
 
-    val status: HttpStatus //
+    val status: HttpStatus // HttpStatus
     val message: String // 설명
 }
