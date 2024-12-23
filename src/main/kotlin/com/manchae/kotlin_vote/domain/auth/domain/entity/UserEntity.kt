@@ -1,6 +1,6 @@
 package com.manchae.kotlin_vote.domain.auth.domain.entity
 
-import com.manchae.kotlin_vote.domain.auth.domain.enum.UserRoles
+import com.manchae.kotlin_vote.domain.auth.domain.enums.UserType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -11,15 +11,15 @@ import jakarta.persistence.Id
 class UserEntity (
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    @Column(nullable = false, unique = true)
+    val email: String,
 
     @Column(nullable = false)
-    val username: String,
+    val name: String,
 
     @Column(nullable = false)
     val password: String,
 
     @Column(nullable = false)
-    val role: UserRoles = UserRoles.ROLE_USER
+    val role: UserType = UserType.ROLE_USER
 )
