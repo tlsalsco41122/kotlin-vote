@@ -6,16 +6,20 @@ import com.manchae.kotlin_vote.global.security.jwt.enums.TokenType
 import io.jsonwebtoken.Header
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.crypto.SecretKey
-import javax.crypto.spec.SecretKeySpec
 
 @Component
-class JwtUtil(
+class JwtProvider(
     private val jwtProperties: JwtProperties,
 ) {
+
+    private val secretKey : SecretKey = Keys.hmacShaKeyFor(
+        jwtProperties.secretKey.toByteArray(StandardCharsets.UTF_8)
+    )
 
     fun createToken(user: User): LoginRes {
         val refreshToken = createRefreshToken(user)
@@ -24,6 +28,12 @@ class JwtUtil(
         return LoginRes("Bearer $accessToken", "Bearer $refreshToken")
     }
 
+//    fun refreshToken(user: User): RefreshRes{ // 토큰 리프레시
+//        val newAccessToken = createAccessToken(user)
+//
+//        return RefreshRes("Bearer $newAccessToken")
+//    }
+
     private fun createRefreshToken(user: User): String {
         return Jwts.builder()
             .setHeaderParam(Header.JWT_TYPE, TokenType.REFRESH)
@@ -31,7 +41,7 @@ class JwtUtil(
             .claim("role",user.role)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + jwtProperties.refreshExp))
-            .signWith(SignatureAlgorithm.HS256, jwtProperties.secretKey)
+            .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact()
     }
     private fun createAccessToken(user: User): String {
@@ -41,7 +51,7 @@ class JwtUtil(
             .claim("role",user.role)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + jwtProperties.accessExp))
-            .signWith(SignatureAlgorithm.HS256, jwtProperties.secretKey)
+            .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact()
     }
 }
