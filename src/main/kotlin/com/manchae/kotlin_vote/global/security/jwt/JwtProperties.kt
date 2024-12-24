@@ -1,12 +1,12 @@
 package com.manchae.kotlin_vote.global.security.jwt
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "application.jwt")
 data class JwtProperties(
-    val secretKey: String,
-    val accessExp: Long,
-    val refreshExp: Long
+    @Value("\${jwt.secretKey}") val secretKey: String,
+    @Value("\${jwt.refreshExp}") val refreshExp: Long,
+    @Value("\${jwt.accessExp}") val accessExp: Long
 )
