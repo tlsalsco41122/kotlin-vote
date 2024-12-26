@@ -27,8 +27,8 @@ class JwtUtil(
 //        return !(claims.getHeader().get(Header.JWT_TYPE).equals(jwtType.toString()));
 //    }
 
-//    fun isWrongType(claims: Jws<Claims>, token: String): boolean{
-//        return !(claims.getHeader().get(Header.JWT_TYPE).equals(TokenType.toString()))
+//    fun isWrongType(claims: Jws<Claims>, token: String): Boolean{
+//        return
 //    }
 
     fun createToken(user: User): LoginRes {

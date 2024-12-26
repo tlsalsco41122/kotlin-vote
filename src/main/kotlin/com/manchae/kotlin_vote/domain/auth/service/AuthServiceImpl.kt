@@ -12,8 +12,10 @@ import com.manchae.kotlin_vote.global.common.BaseResponse
 import com.manchae.kotlin_vote.global.exception.CustomException
 import com.manchae.kotlin_vote.global.security.jwt.JwtUtil
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+@Service
 class AuthServiceImpl(
     private val authRepository: AuthRepository,
     private val encoder: BCryptPasswordEncoder,
