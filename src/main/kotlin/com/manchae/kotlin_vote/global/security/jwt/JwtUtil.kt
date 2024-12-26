@@ -3,9 +3,7 @@ package com.manchae.kotlin_vote.global.security.jwt
 import com.manchae.kotlin_vote.domain.auth.presentation.dto.User
 import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.LoginRes
 import com.manchae.kotlin_vote.global.security.jwt.enums.TokenType
-import io.jsonwebtoken.Header
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
@@ -13,13 +11,25 @@ import java.util.*
 import javax.crypto.SecretKey
 
 @Component
-class JwtProvider(
+class JwtUtil(
     private val jwtProperties: JwtProperties,
 ) {
 
     private val secretKey : SecretKey = Keys.hmacShaKeyFor(
         jwtProperties.secretKey.toByteArray(StandardCharsets.UTF_8)
     )
+
+    fun getUserEmail(token: String): String{
+        return
+    }
+
+//    public boolean isWrongType(final Jws<Claims> claims, final JwtType jwtType) {
+//        return !(claims.getHeader().get(Header.JWT_TYPE).equals(jwtType.toString()));
+//    }
+
+//    fun isWrongType(claims: Jws<Claims>, token: String): boolean{
+//        return !(claims.getHeader().get(Header.JWT_TYPE).equals(TokenType.toString()))
+//    }
 
     fun createToken(user: User): LoginRes {
         val refreshToken = createRefreshToken(user)

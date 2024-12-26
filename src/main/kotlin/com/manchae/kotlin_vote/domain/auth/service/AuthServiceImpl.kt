@@ -10,14 +10,14 @@ import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.LoginRes
 import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.RefreshRes
 import com.manchae.kotlin_vote.global.common.BaseResponse
 import com.manchae.kotlin_vote.global.exception.CustomException
-import com.manchae.kotlin_vote.global.security.jwt.JwtProvider
+import com.manchae.kotlin_vote.global.security.jwt.JwtUtil
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.transaction.annotation.Transactional
 
 class AuthServiceImpl(
     private val authRepository: AuthRepository,
     private val encoder: BCryptPasswordEncoder,
-    private val jwtProvider: JwtProvider,
+    private val jwtUtil: JwtUtil,
     private val userMapper: UserMapper
 ): AuthService {
 
@@ -51,7 +51,7 @@ class AuthServiceImpl(
 
         return BaseResponse(
             message = "로그인 성공",
-            data = jwtProvider.createToken(
+            data = jwtUtil.createToken(
                 user = userMapper.toDomain(user)
             )
         )
