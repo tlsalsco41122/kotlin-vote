@@ -3,6 +3,7 @@ package com.manchae.kotlin_vote.domain.room.presentation
 import com.manchae.kotlin_vote.domain.room.presentation.dto.request.RoomReq
 import com.manchae.kotlin_vote.domain.room.presentation.dto.response.AllRoomRes
 import com.manchae.kotlin_vote.domain.room.presentation.dto.response.RoomRes
+import com.manchae.kotlin_vote.domain.room.service.RoomService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
