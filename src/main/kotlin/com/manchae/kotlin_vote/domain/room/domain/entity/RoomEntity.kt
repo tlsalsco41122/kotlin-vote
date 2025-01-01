@@ -17,7 +17,6 @@ class RoomEntity(
     @Column(nullable = false)
     val content: String,
 
-    // 투표
     @OneToMany(mappedBy = "room", cascade = [CascadeType.ALL], orphanRemoval = true)
     val votes: MutableList<VoteEntity> = ArrayList()
 )
