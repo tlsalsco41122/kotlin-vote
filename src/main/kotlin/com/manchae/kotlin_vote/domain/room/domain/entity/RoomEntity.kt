@@ -1,5 +1,6 @@
 package com.manchae.kotlin_vote.domain.room.domain.entity
 
+import com.manchae.kotlin_vote.domain.vote.domain.entity.VoteEntity
 import jakarta.persistence.*
 
 @Entity
@@ -14,5 +15,8 @@ class RoomEntity(
     val title: String,
 
     @Column(nullable = false)
-    val content: String
+    val content: String,
+
+    @OneToMany(mappedBy = "room", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val votes: MutableList<VoteEntity> = ArrayList()
 )
