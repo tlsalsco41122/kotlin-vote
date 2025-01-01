@@ -4,6 +4,7 @@ import com.manchae.kotlin_vote.domain.room.domain.entity.RoomEntity
 import jakarta.persistence.*
 
 @Entity
+@Table(name = "tb_vote")
 class VoteEntity(
 
     @Id
