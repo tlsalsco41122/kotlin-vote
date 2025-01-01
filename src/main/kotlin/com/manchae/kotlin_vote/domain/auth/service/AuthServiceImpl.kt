@@ -11,6 +11,8 @@ import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.RefreshRes
 import com.manchae.kotlin_vote.global.common.BaseResponse
 import com.manchae.kotlin_vote.global.exception.CustomException
 import com.manchae.kotlin_vote.global.security.jwt.JwtUtil
+import com.manchae.kotlin_vote.global.security.jwt.enums.TokenType
+import com.manchae.kotlin_vote.global.security.jwt.exception.JwtErrorCode
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -61,6 +63,20 @@ class AuthServiceImpl(
 
     @Transactional
     override fun refreshToken(refreshReq: RefreshReq): BaseResponse<RefreshRes> {
+        val token = jwtUtil.getToken(refreshReq.refreshToken)
+        val claims = jwtUtil.getClaims(token)
+
+        if(jwtUtil.isWrongType(claims, TokenType.REFRESH))
+            throw CustomException(JwtErrorCode.TOKEN_TYPE_ERROR)
+
+        val user = authRepository.findByEmail(
+            jwtUtil.getUserEmail(token)
+        )
+
+        return BaseResponse(
+            message = "리프레시 성공",
+            data = jwtUtil.refreshToken(user = userMapper.toDomain(user!!))
+        )
 
     }
 }

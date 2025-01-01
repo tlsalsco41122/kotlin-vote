@@ -2,7 +2,10 @@ package com.manchae.kotlin_vote.global.security.jwt
 
 import com.manchae.kotlin_vote.domain.auth.presentation.dto.User
 import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.LoginRes
+import com.manchae.kotlin_vote.domain.auth.presentation.dto.response.RefreshRes
+import com.manchae.kotlin_vote.global.exception.CustomException
 import com.manchae.kotlin_vote.global.security.jwt.enums.TokenType
+import com.manchae.kotlin_vote.global.security.jwt.exception.JwtErrorCode
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import org.springframework.stereotype.Component
@@ -19,17 +22,30 @@ class JwtUtil(
         jwtProperties.secretKey.toByteArray(StandardCharsets.UTF_8)
     )
 
-    fun getUserEmail(token: String): String{
-        return
+    fun getUserEmail(token: String): String {
+        val claims = getClaims(token)
+        return claims.body["email"] as String
     }
 
-//    public boolean isWrongType(final Jws<Claims> claims, final JwtType jwtType) {
-//        return !(claims.getHeader().get(Header.JWT_TYPE).equals(jwtType.toString()));
-//    }
+    fun getToken(token: String): String {
+        return token.removePrefix("Bearer ")
+    }
 
-//    fun isWrongType(claims: Jws<Claims>, token: String): Boolean{
-//        return
-//    }
+    fun isWrongType(claims: Jws<Claims>, tokenType: TokenType): Boolean {
+        val type = claims.header.get(Header.JWT_TYPE) as String
+        return type != tokenType.name
+    }
+
+    fun getClaims(token: String): Jws<Claims> {
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(getToken(token))
+        } catch (e: JwtException) {
+            throw CustomException(JwtErrorCode.ILLEGAL_TOKEN)
+        }
+    }
 
     fun createToken(user: User): LoginRes {
         val refreshToken = createRefreshToken(user)
@@ -37,12 +53,6 @@ class JwtUtil(
 
         return LoginRes("Bearer $accessToken", "Bearer $refreshToken")
     }
-
-//    fun refreshToken(user: User): RefreshRes{ // 토큰 리프레시
-//        val newAccessToken = createAccessToken(user)
-//
-//        return RefreshRes("Bearer $newAccessToken")
-//    }
 
     private fun createRefreshToken(user: User): String {
         return Jwts.builder()
@@ -63,5 +73,12 @@ class JwtUtil(
             .setExpiration(Date(System.currentTimeMillis() + jwtProperties.accessExp))
             .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact()
+    }
+
+
+    fun refreshToken(user: User): RefreshRes { // 토큰 리프레시
+        val newAccessToken = createAccessToken(user)
+
+        return RefreshRes("Bearer $newAccessToken")
     }
 }
