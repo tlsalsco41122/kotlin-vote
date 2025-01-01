@@ -12,5 +12,6 @@ enum class JwtErrorCode(
     ILLEGAL_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 토큰"),
     TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "토큰이 존재하지 않음"),
     TOKEN_TYPE_ERROR(HttpStatus.BAD_REQUEST,"잘못된 타입"),
-    UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED,"지원되지 않는 토큰");
+    UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED,"지원되지 않는 토큰"),
+    SIGNATURE_ERROR(HttpStatus.UNAUTHORIZED, "서명 오류")
 }
