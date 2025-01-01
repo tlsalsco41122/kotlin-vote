@@ -19,12 +19,10 @@ class RoomService(
 
     fun createRoom(roomReq: RoomReq): BaseResponse<Unit>{
 
-        if (roomReq.title.isBlank()) {
+        if (roomReq.title.isBlank())
             throw CustomException(RoomErrorCode.ROOM_EMPTY_TITLE)
-        }
-        if (roomReq.content.isBlank()) {
+        if (roomReq.content.isBlank())
             throw CustomException(RoomErrorCode.ROOM_EMPTY_CONTENT)
-        }
 
         roomRepository.save(
             roomMapper.toEntity(roomReq)
