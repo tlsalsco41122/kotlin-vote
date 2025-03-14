@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PW}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secretKey: ${jwt.secretKey}
+  refreshExp: 604800000 # 1주
+  accessExp: 6000000 # 2시간
